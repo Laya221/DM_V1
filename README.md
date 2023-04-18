@@ -1,5 +1,5 @@
 # DM_V1
-#how can I run The app:
+#how can I run This app:
 
 1- open command prompt,type: pip install -r requirement.txt (for first time)
 
