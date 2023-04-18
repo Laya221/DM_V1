@@ -9,13 +9,7 @@ import random
 import time
 time.clock = time.time
 import openai
-import pandas as pd
 import numpy as np
-import pickle
-from transformers import GPT2TokenizerFast
-from langchain.chains.conversation.memory import ConversationBufferMemory
-from langchain import OpenAI, LLMChain, PromptTemplate
-from langchain.chat_models import ChatOpenAI
 import os 
 
 
@@ -238,7 +232,7 @@ def conversation(user_response):
       return """Let's start our journey in English.<br><span style="color:green">Type <b>OK</b> to continue..</span>"""
   if static.step=='step8':
     
-    temp1=A2ZBot("""return more than 100 {} vocabularies  for {} english level as following:
+    temp1=A2ZBot("""return more than 10 {} vocabularies  for {} english level as following:
                 word,word,word
                 """.format(static.user_details['path'],static.user_details['current_english_level']))
     temp1=vocabularies(100,static.user_details['path'])
@@ -251,7 +245,7 @@ def conversation(user_response):
     with open("user_data.json", "w") as write_file:
       json.dump(data, write_file)
     static.step='step9'
-    return """Thanks for your time, your information has been successfully collected and you can start your journey with A2ZBot.<br><span style="color:green">Type <b>Hello</b> to start</span>"""
+    return """Thanks for your time, your information has been successfully collected and you can start your journey with A2ZBot.<br><span style="color:green">Type <b>Hello</b> to start warm up conversation</span>"""
   
   if static.step=='step9':
     with open("user_data.json", "r") as read_file:
