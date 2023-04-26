@@ -111,17 +111,19 @@ def check(bot_response,user_response,problem):
   else:
     return False
 def conversation(user_response):
-  if user_response=='START_STUDY_PLAN':
-    static.step=='step10'
-  if user_response=='RESET':
+  if user_response.strip()=='START_STUDY_PLAN':
+    return "Your study plan is not avilable for this version!!"
+    
+  if user_response.strip()=='RESET':
     static.messages=[]
+    return "History of Conversation has been deleted"
   if static.step=='step1':
         static.step='step2'
         bot_response= "What is your name?"
         static.history.append(bot_response)
         return bot_response
   if static.step=='step2':
-    bot_response=check(static.history[-1],user_response,'user must to write his name')
+    bot_response=check(static.history[-1],user_response,'user say his name')
     if bot_response:
       return 'This is an example for good response:\n'+bot_response
     else:
@@ -231,7 +233,7 @@ def conversation(user_response):
       return """Let's start our journey in English.<br><span style="color:green">Type <b>OK</b> to continue..</span>"""
   if static.step=='step8':
     
-    temp1=A2ZBot("""return more than 10 {} vocabularies  for {} english level as following:
+    temp1=A2ZBot("""return more than 100 {} vocabularies  for {} english level as following:
                 word,word,word
                 """.format(static.user_details['path'],static.user_details['current_english_level']))
     temp1=vocabularies(100,static.user_details['path'])
@@ -246,7 +248,7 @@ def conversation(user_response):
     static.step='step9'
     return """Thanks for your time, your information has been successfully collected and you can start your journey with A2ZBot.<br><span style="color:green">Type <b>Hello</b> to start warmup conversation</span>"""
   
-  if static.step=='step9':
+  if static.step=='step9' and user_response.strip()!='RESET' and user_response.strip()!='START_STUDY_PLAN' :
     with open("user_data.json", "r") as read_file:
       data = json.load(read_file)
     static.user_data=data[static.email]
@@ -254,8 +256,7 @@ def conversation(user_response):
     try:
       return warmup(user_response)
     except:
-      return """I'm Sory!!, warmup Conversation size exceeds available limits,let's move to your study plan.or type 'RESET' to restart"""
-
+      return """I'm Sory!!, warmup Conversation size exceeds available limits,let's move to your study plan.or type 'RESET' to restart"""  
 @app.get("/", response_class=HTMLResponse)
 def home(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
